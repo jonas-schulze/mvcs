@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
@@ -20,7 +19,9 @@ func readConfig() (*Config, error) {
 
 func url(vcs, baseUrl, repo string) string {
 	var buf bytes.Buffer
-	buf.WriteString(filepath.Join(baseUrl, repo))
+	// TODO: filepath.Join() transforms "ssh://stuff" into "ssh:/stuff". Why?
+	buf.WriteString(baseUrl)
+	buf.WriteString(repo)
 	if vcs == "git" {
 		buf.WriteString(".git")
 	}
